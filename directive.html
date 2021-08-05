@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"> 
+        <div v-click-outside="blur">
+            <input type="text" @focus="focus" />
+            <div v-show="visiable">
+                面板
+            </div>
+        </div>
+
+         
+
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script>
+        //指令的目的就是dom操作
+          let vm = new Vue({
+              el:'#app',
+              directives:{
+                  clickOutside:{
+                      bind(el,bindings,vnode,oldVnode){
+                          console.log(el,bindings,vnode,oldVnode);
+                           el.handler = (e) =>{
+                              if(!el.contains(e.target)){
+                                  vnode.context.blur()
+                              }
+                          }
+                          document.addEventListener('click',el.handler)
+                      },
+                      inserted(){
+
+                      },
+                      update(){
+
+                      },
+                      componentUpdated(){
+
+                      },
+                      unbind(el){
+                          //解除事件绑定
+                          document.removeEventListener('click',el.handler)
+                      }
+
+                  }
+
+              },
+              data(){
+                  return{
+                      visiable:false
+                  }
+              },
+              methods:{
+                  focus(){
+                     this.visiable = true;
+                  },
+                  blur(){
+                      this.visiable = false;
+                  }
+              }
+
+          })
+    </script>
+</body>
+</html>
